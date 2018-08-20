@@ -2,6 +2,7 @@ import com.github.axet.wget.WGet;
 import com.google.gson.Gson;
 import okhttp3.*;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -45,6 +46,10 @@ public class Main {
     private static Timer mTimer;
 
     public static void main(String[] args) {
+        File file = new File(ROOT_PATH);
+        if (!file.exists()) {
+            file.mkdir();
+        }
         mTimer = new Timer();
         mTimer.schedule(new TimerDownLoad(ROOT_PATH), 0, TimeUnit.MINUTES.toMillis(TIME_INTERVAL));
     }
