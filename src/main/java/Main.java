@@ -14,10 +14,11 @@ import java.util.TimerTask;
 import java.util.concurrent.*;
 
 public class Main {
-    public static final String DOWNLOAD_URL = "http://api.kwai.com/rest/o/feed/hot?language=en-gb&appver=1.2.0.501507&c=GOOGLE_PLAY&oc=GOOGLE_PLAY&ud=1064631422&app=1&did=ANDROID_b1fd4570b17c9a01&lat=0&lon=0&mod=HUAWEI%28WAS-TL10%29&net=WIFI&sys=KWAI_ANDROID_8.0.0&ver=1.2&iuid=&country_code=cn";
-    public static final int JSON_COUNT = 10; // 启动一次遍历10次网址 每次10个 总共100个
-    public static final String ROOT_PATH = "F://kwaiMvDownload//";
-    public static final int TIME_INTERVAL = 60; // 每隔一定时间执行一次，单位分钟
+    private static final String DOWNLOAD_URL = "http://api.kwai.com/rest/o/feed/hot?language=en-gb&appver=1.2.0.501507&c=GOOGLE_PLAY&oc=GOOGLE_PLAY&ud=1064631422&app=1&did=ANDROID_b1fd4570b17c9a01&lat=0&lon=0&mod=HUAWEI%28WAS-TL10%29&net=WIFI&sys=KWAI_ANDROID_8.0.0&ver=1.2&iuid=&country_code=cn";
+    private static final int JSON_COUNT = 10; // 启动一次遍历10次网址 每次10个 总共100个
+
+    private static String ROOT_PATH = "F://kwaiMvDownload//";
+    private static int TIME_INTERVAL = 60; // 每隔一定时间执行一次，单位分钟
 
     private static String[] mRefreshTime = {"1", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
     private static String[] mPcursor = {"", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
@@ -45,7 +46,21 @@ public class Main {
 
     private static Timer mTimer;
 
+    private static void printHelp() {
+        System.out.println("java -jar flashdownload.jar <path> <minute>");
+    }
+
     public static void main(String[] args) {
+        if (args.length != 2) {
+            printHelp();
+            return;
+        }
+
+        String path = args[0];
+        String minutes = args[1];
+        ROOT_PATH = path;
+        TIME_INTERVAL = Integer.parseInt(minutes);
+
         File file = new File(ROOT_PATH);
         if (!file.exists()) {
             file.mkdir();
@@ -127,7 +142,7 @@ public class Main {
                         kwaiJson = response.body().string();
                         kwaiJsons.add(kwaiJson);
 
-                        System.out.println(kwaiJson);
+//                        System.out.println(kwaiJson);
                         System.out.println("***********    " + i);
                     } catch (IOException e) {
                         e.printStackTrace();
